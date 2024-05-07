@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,5 +19,6 @@ public class Field {
     private String name;
     @NotBlank
     private String type;
+    private List<String> options; //for dropdown, multi-select-dropdown, checkbox and radio
     private Validation validation;
 }

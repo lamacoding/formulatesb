@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Validation {
-    private String message;
-    private String type = "regex"; // Default to 'regex'
-    private String pattern;
+    private String message; // Error message if input does not fit regex pattern
+    private String pattern; // Regex pattern
+    private Boolean isRequired;
 }
