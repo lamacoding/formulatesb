@@ -1,14 +1,8 @@
 package com.formulate.formulatesb.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class Validation {
     private String message; // Error message if input does not fit regex pattern
     private String pattern; // Regex pattern
