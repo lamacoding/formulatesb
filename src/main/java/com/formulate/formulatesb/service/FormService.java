@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FormService {
@@ -37,13 +38,30 @@ public class FormService {
     }
 
     public Form updateForm(String id, Form updatedForm) {
-        // Add logic to ensure the form with 'id' exists if needed
+        Optional<Form> formOptional = formRepository.findById(id);
+        if (formOptional.isEmpty()) {
+            return null;
+        }
         ObjectId objectId = new ObjectId(id);
         updatedForm.setId(objectId); // Ensure the updatedForm retains the original ID
         return formRepository.save(updatedForm);
     }
 
-    public void deleteForm(String id) {
+    public boolean deleteForm(String id) {
+        Optional<User> userOptional = userRepository.findAll().stream()
+                .filter(user -> user.getOwnedForms().contains(id))
+                .findAny();
+
+        if (userOptional.isEmpty()) {
+            return false;
+        }
+
+        User user = userOptional.get();
+        user.getOwnedForms().remove(id);
+        userRepository.save(user);
+
         formRepository.deleteById(id);
+
+        return true;
     }
 }

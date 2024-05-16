@@ -39,7 +39,8 @@ public class FormController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable String id) {
-        formService.deleteForm(id);
+    public ResponseEntity<Boolean> delete(@PathVariable String id) {
+        boolean deleted = formService.deleteForm(id);
+        return new ResponseEntity<>(deleted, deleted ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 }
