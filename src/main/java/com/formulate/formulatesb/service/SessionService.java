@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SessionService {
@@ -33,6 +34,19 @@ public class SessionService {
         requestedSession.setStartTime(LocalDateTime.now());
         requestedSession.setEndTime(LocalDateTime.now().plusMinutes(10));
         return sessionRepository.save(requestedSession);
+    }
+
+    public Boolean getSessionValidity(String sessionId) {
+        Optional<Session> currentSession = sessionRepository.findById(sessionId);
+
+        return currentSession.filter(session -> !session
+                .getEndTime()
+                .isBefore(LocalDateTime.now())).isPresent();
+    }
+
+    public void destroySession(String sessionId) {
+        Optional<Session> currentSession = sessionRepository.findById(sessionId);
+        currentSession.ifPresent(session -> sessionRepository.delete(session));
     }
 
     private Boolean verifyCredentials(LoginRequest loginRequest) {
