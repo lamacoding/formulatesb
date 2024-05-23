@@ -23,7 +23,7 @@ public class SessionController {
     }
 
     @GetMapping("/logout/{sessionId}")
-    public ResponseEntity<Void> logout(@PathVariable String sessionId) {
+    public ResponseEntity<Void> logout(@RequestBody String sessionId) {
         try {
             sessionService.destroySession(sessionId);
         } catch (Exception e) {
