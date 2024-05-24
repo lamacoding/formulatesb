@@ -1,6 +1,7 @@
 package com.formulate.formulatesb.controller;
 
 import com.formulate.formulatesb.LoginRequest;
+import com.formulate.formulatesb.LogoutRequest;
 import com.formulate.formulatesb.model.Session;
 import com.formulate.formulatesb.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,10 @@ public class SessionController {
         return new ResponseEntity<>(createdSession, createdSession == null ? HttpStatus.UNAUTHORIZED : HttpStatus.OK);
     }
 
-    @GetMapping("/logout/{sessionId}")
-    public ResponseEntity<Void> logout(@RequestBody String sessionId) {
+    @GetMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody LogoutRequest logoutRequest) {
         try {
-            sessionService.destroySession(sessionId);
+            sessionService.destroySession(logoutRequest);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

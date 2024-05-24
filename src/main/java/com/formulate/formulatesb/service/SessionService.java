@@ -1,12 +1,15 @@
 package com.formulate.formulatesb.service;
 
 import com.formulate.formulatesb.LoginRequest;
+import com.formulate.formulatesb.LogoutRequest;
 import com.formulate.formulatesb.model.User;
 import com.formulate.formulatesb.model.Session;
 import com.formulate.formulatesb.repository.SessionRepository;
 import com.formulate.formulatesb.util.PasswordService;
 import com.formulate.formulatesb.util.RandomHashGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -44,9 +47,14 @@ public class SessionService {
                 .isBefore(LocalDateTime.now())).isPresent();
     }
 
-    public void destroySession(String sessionId) {
-        Optional<Session> currentSession = sessionRepository.findById(sessionId);
-        currentSession.ifPresent(session -> sessionRepository.delete(session));
+    public void destroySession(LogoutRequest logoutRequest) {
+        Optional<Session> currentSession = sessionRepository.findById(logoutRequest.getSessionId());
+        if (currentSession.isPresent()) {
+            Session session = currentSession.get();
+            if (session.getUser().getEmail().equals(logoutRequest.getUsername())) {
+                sessionRepository.delete(session);
+            }
+        }
     }
 
     private Boolean verifyCredentials(LoginRequest loginRequest) {
