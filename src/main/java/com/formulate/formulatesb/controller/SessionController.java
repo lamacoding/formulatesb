@@ -23,8 +23,9 @@ public class SessionController {
         return new ResponseEntity<>(createdSession, createdSession == null ? HttpStatus.UNAUTHORIZED : HttpStatus.OK);
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<Void> logout(@RequestBody LogoutRequest logoutRequest) {
+        System.out.println("LogoutRequest: " + logoutRequest);
         try {
             sessionService.destroySession(logoutRequest);
         } catch (Exception e) {

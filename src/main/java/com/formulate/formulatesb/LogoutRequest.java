@@ -11,5 +11,5 @@ import lombok.ToString;
 @ToString
 public class LogoutRequest {
     public String sessionId;
-    public String username;
+    public String username; //eq email address
 }
