@@ -42,18 +42,21 @@ public class SessionService {
     public Boolean getSessionValidity(String sessionId) {
         Optional<Session> currentSession = sessionRepository.findById(sessionId);
 
-        return currentSession.filter(session -> !session
-                .getEndTime()
-                .isBefore(LocalDateTime.now())).isPresent();
+        if (currentSession.isPresent()) {
+            if(!currentSession.get().getEndTime().isBefore(LocalDateTime.now())) {
+                currentSession.get().setEndTime(LocalDateTime.now().plusMinutes(10));
+                sessionRepository.save(currentSession.get());
+                return true;
+            }
+        }
+        return false;
     }
 
     public void destroySession(LogoutRequest logoutRequest) {
         Optional<Session> currentSession = sessionRepository.findById(logoutRequest.getSessionId());
         if (currentSession.isPresent()) {
             Session session = currentSession.get();
-            if (true || session.getUser().getEmail().equals(logoutRequest.getUsername())) {
-                sessionRepository.delete(session);
-            }
+            sessionRepository.delete(session);
         }
     }
 

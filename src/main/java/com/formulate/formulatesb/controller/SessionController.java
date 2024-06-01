@@ -36,6 +36,9 @@ public class SessionController {
 
     @GetMapping("/session/{sessionId}")
     public ResponseEntity<Boolean> getSessionValidity(@PathVariable String sessionId) {
+        if(sessionId == null || sessionId.isEmpty()) {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(sessionService.getSessionValidity(sessionId), HttpStatus.OK);
     }
 }
