@@ -26,7 +26,7 @@ public class FormService {
         return formRepository.findById(id).orElse(null); // Handle potential 'not found' case
     }
 
-    public Form createForm(Form form) {
+    public Form createForm(String formName) {
         User user = userRepository.findById(form.getOwnerId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 

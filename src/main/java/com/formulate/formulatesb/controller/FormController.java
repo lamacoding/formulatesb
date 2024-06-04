@@ -29,8 +29,9 @@ public class FormController {
     }
 
     @PutMapping("/create")
-    public ResponseEntity<Form> create(@Valid @RequestBody Form form) {
-        return new ResponseEntity<>(formService.createForm(form), HttpStatus.OK);
+    public ResponseEntity<Form> create(@Valid @RequestBody String formName) {
+        System.out.println("Create form");
+        return new ResponseEntity<>(formService.createForm(formName), HttpStatus.OK);
     }
 
     @PatchMapping("/update/{id}")
