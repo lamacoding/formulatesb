@@ -23,6 +23,11 @@ public class FormController {
         return new ResponseEntity<>(formService.getAllForms(), HttpStatus.OK);
     }
 
+    @GetMapping("/all/bySessionId")
+    public ResponseEntity<List<Form>> getAllBySessionId(String sessionId) {
+        return new ResponseEntity<>(formService.getAllFormsBySessionId(sessionId), HttpStatus.OK);
+    }
+
     @GetMapping("/id/{id}")
     public ResponseEntity<Form> getById(@PathVariable String id) {
         return new ResponseEntity<>(formService.getFormById(id), HttpStatus.OK);

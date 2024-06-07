@@ -65,4 +65,8 @@ public class FormService {
 
         return true;
     }
+
+    public List<Form> getAllFormsBySessionId(String sessionId) {
+        return formRepository.findAllBySessionId(sessionId);
+    }
 }
