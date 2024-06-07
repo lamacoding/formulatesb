@@ -27,14 +27,15 @@ public class FormService {
     }
 
     public Form createForm(String formName) {
-        User user = userRepository.findById(form.getOwnerId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        Form savedForm = formRepository.save(form);
-        user.getOwnedForms().add(savedForm.getId().toString());
-        userRepository.save(user);
-
-        return savedForm;
+//        User user = userRepository.findById(form.getOwnerId())
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//        Form savedForm = formRepository.save(form);
+//        user.getOwnedForms().add(savedForm.getId().toString());
+//        userRepository.save(user);
+//
+//        return savedForm;
+        return null;
     }
 
     public Form updateForm(String id, Form updatedForm) {

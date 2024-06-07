@@ -60,6 +60,10 @@ public class SessionService {
         }
     }
 
+    public User getUserBySessionId(String sessionId) {
+        return sessionRepository.findById(sessionId).map(Session::getUser).orElse(null);
+    }
+
     private Boolean verifyCredentials(LoginRequest loginRequest) {
         User user = userService.getUserByEmail(loginRequest.getUsername());
         if (user != null && user.getPassword().equals(PasswordService.hashPassword(loginRequest.getPassword()))) {
