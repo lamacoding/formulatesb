@@ -23,9 +23,10 @@ public class FormController {
         return new ResponseEntity<>(formService.getAllForms(), HttpStatus.OK);
     }
 
-    @GetMapping("/all/bySessionId")
-    public ResponseEntity<List<Form>> getAllBySessionId(String sessionId) {
-        return new ResponseEntity<>(formService.getAllFormsBySessionId(sessionId), HttpStatus.OK);
+    @GetMapping("/all/bySessionId/{sessionId}")
+    public ResponseEntity<List<Form>> getAllBySessionId(@PathVariable String sessionId) {
+        List<Form> forms = formService.getAllFormsBySessionId(sessionId);
+        return new ResponseEntity<>(forms, forms == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @GetMapping("/id/{id}")

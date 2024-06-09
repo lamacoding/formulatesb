@@ -1,8 +1,10 @@
 package com.formulate.formulatesb.service;
 
 import com.formulate.formulatesb.model.Form;
+import com.formulate.formulatesb.model.Session;
 import com.formulate.formulatesb.model.User;
 import com.formulate.formulatesb.repository.FormRepository;
+import com.formulate.formulatesb.repository.SessionRepository;
 import com.formulate.formulatesb.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,10 @@ public class FormService {
     private FormRepository formRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private SessionRepository sessionRepository;
+    @Autowired
+    private SessionService sessionService;
 
     public List<Form> getAllForms() {
         return formRepository.findAll();
@@ -67,6 +73,20 @@ public class FormService {
     }
 
     public List<Form> getAllFormsBySessionId(String sessionId) {
-        return formRepository.findAllBySessionId(sessionId);
+        Session session = sessionRepository.findById(sessionId).orElse(null);
+
+        if (session == null) {
+            return null;
+        }
+
+        boolean isValid = sessionService.getSessionValidity(sessionId);
+
+        if (!isValid) {
+            return null;
+        }
+
+        User user = session.getUser();
+        List<String> ownedForms = user.getOwnedForms();
+        return formRepository.findAllById(ownedForms);
     }
 }

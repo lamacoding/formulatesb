@@ -8,5 +8,4 @@ import java.util.List;
 
 @Repository
 public interface FormRepository extends MongoRepository<Form, String> {
-    List<Form> findAllBySessionId(String sessionId);
 }
