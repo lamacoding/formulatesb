@@ -16,7 +16,6 @@ import java.util.List;
 public class FormController {
     @Autowired
     private FormService formService;
-    // private final String currentUser = "6636beed0e66743f9cefa30f";
 
     @GetMapping("/all")
     public ResponseEntity<List<Form>> getAll() {
