@@ -1,5 +1,6 @@
 package com.formulate.formulatesb.controller;
 
+import com.formulate.formulatesb.dto.UserCreateDto;
 import com.formulate.formulatesb.model.User;
 import com.formulate.formulatesb.service.UserService;
 import jakarta.validation.Valid;
@@ -31,9 +32,10 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
     }
 
-    @PutMapping("/create")
-    public ResponseEntity<User> create(@Valid @RequestBody User user) {
-        return new ResponseEntity<>(userService.createUser(user), HttpStatus.OK);
+    @PutMapping("/register")
+    public ResponseEntity<User> create(@Valid @RequestBody UserCreateDto userCreateDto) {
+        User newUser = userService.createUser(userCreateDto);
+        return new ResponseEntity<>(newUser, newUser == null ? HttpStatus.CONFLICT : HttpStatus.OK);
     }
 
     @PatchMapping("/update/{id}")

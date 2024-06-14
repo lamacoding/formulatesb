@@ -1,23 +1,15 @@
-package com.formulate.formulatesb.model;
+package com.formulate.formulatesb.dto;
 
+import com.formulate.formulatesb.model.User;
+import com.formulate.formulatesb.util.PasswordService;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.lang.Nullable;
-
-import java.util.List;
 
 @Data
-@Document(collection = "users")
-public class User {
-    @Id
-    private ObjectId id;
-
+public class UserCreateDto {
     @Length(min = 2)
     private String firstname;
     @Length(min = 2)
@@ -28,6 +20,13 @@ public class User {
     private String email;
     @Length(min = 8)
     private String password;
-    @Nullable
-    private List<String> ownedForms;
+
+    public User mapToUser() {
+        User user = new User();
+        user.setFirstname(this.firstname);
+        user.setLastname(this.lastname);
+        user.setEmail(this.email);
+        user.setPassword(PasswordService.hashPassword(this.password));
+        return user;
+    }
 }

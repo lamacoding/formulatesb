@@ -1,5 +1,6 @@
 package com.formulate.formulatesb.service;
 
+import com.formulate.formulatesb.dto.UserCreateDto;
 import com.formulate.formulatesb.model.User;
 import com.formulate.formulatesb.repository.UserRepository;
 import org.bson.types.ObjectId;
@@ -25,8 +26,12 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public User createUser(UserCreateDto userCreateDto) {
+        User existingUser = userRepository.findByEmail(userCreateDto.getEmail());
+        if (existingUser != null) {
+            return null;
+        }
+        return userRepository.save(userCreateDto.mapToUser());
     }
 
     public User updateUser(String id, User user) {

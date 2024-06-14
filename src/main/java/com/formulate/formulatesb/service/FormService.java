@@ -87,6 +87,13 @@ public class FormService {
 
         User user = session.getUser();
         List<String> ownedForms = user.getOwnedForms();
+        if (ownedForms == null)
+        {
+            return null;
+        }
+        if (ownedForms.isEmpty()) {
+            return null;
+        }
         return formRepository.findAllById(ownedForms);
     }
 }
