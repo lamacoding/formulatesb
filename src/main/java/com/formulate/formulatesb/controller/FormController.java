@@ -1,5 +1,6 @@
 package com.formulate.formulatesb.controller;
 
+import com.formulate.formulatesb.dto.FormDto;
 import com.formulate.formulatesb.model.Form;
 import com.formulate.formulatesb.service.FormService;
 import jakarta.validation.Valid;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,9 +25,17 @@ public class FormController {
     }
 
     @GetMapping("/all/bySessionId/{sessionId}")
-    public ResponseEntity<List<Form>> getAllBySessionId(@PathVariable String sessionId) {
+    public ResponseEntity<List<FormDto>> getAllBySessionId(@PathVariable String sessionId) {
         List<Form> forms = formService.getAllFormsBySessionId(sessionId);
-        return new ResponseEntity<>(forms, forms == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        List<FormDto> formDtos = new ArrayList<>();
+
+        if (forms != null) {
+            for (Form form : forms) {
+                formDtos.add(form.mapToFormDto());
+            }
+        }
+
+        return new ResponseEntity<>(formDtos, formDtos.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @GetMapping("/id/{id}")
