@@ -4,6 +4,8 @@ import com.formulate.formulatesb.dto.UserCreateDto;
 import com.formulate.formulatesb.model.User;
 import com.formulate.formulatesb.service.UserService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
 
@@ -34,6 +37,7 @@ public class UserController {
 
     @PutMapping("/register")
     public ResponseEntity<User> create(@Valid @RequestBody UserCreateDto userCreateDto) {
+        logger.info("User registration: " + userCreateDto.toString());
         User newUser = userService.createUser(userCreateDto);
         return new ResponseEntity<>(newUser, newUser == null ? HttpStatus.CONFLICT : HttpStatus.OK);
     }

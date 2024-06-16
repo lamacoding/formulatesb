@@ -106,7 +106,6 @@ public class FormService {
         if (ownedForms.isEmpty()) {
             return null;
         }
-        System.out.println(user);
         return formRepository.findAllById(ownedForms);
     }
 }

@@ -21,8 +21,8 @@ public class SessionController {
 
     @PostMapping("/login")
     public ResponseEntity<Session> login(@RequestBody LoginRequest loginRequest) {
-        Session createdSession = sessionService.createSession(loginRequest);
         logger.info("Login request: " + loginRequest.getUsername());
+        Session createdSession = sessionService.createSession(loginRequest);
         return new ResponseEntity<>(createdSession, createdSession == null ? HttpStatus.UNAUTHORIZED : HttpStatus.OK);
     }
 
