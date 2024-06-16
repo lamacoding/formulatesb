@@ -1,5 +1,6 @@
 package com.formulate.formulatesb.controller;
 
+import com.formulate.formulatesb.dto.FormCreateDto;
 import com.formulate.formulatesb.dto.FormDto;
 import com.formulate.formulatesb.model.Form;
 import com.formulate.formulatesb.service.FormService;
@@ -44,9 +45,10 @@ public class FormController {
     }
 
     @PutMapping("/create")
-    public ResponseEntity<Form> create(@Valid @RequestBody String formName) {
+    public ResponseEntity<Form> create(@Valid @RequestBody FormCreateDto formCreateDto) {
         System.out.println("Create form");
-        return new ResponseEntity<>(formService.createForm(formName), HttpStatus.OK);
+        Form form = formService.createForm(formCreateDto);
+        return new ResponseEntity<>(form, form == null ? HttpStatus.FORBIDDEN : HttpStatus.CREATED);
     }
 
     @PatchMapping("/update/{id}")

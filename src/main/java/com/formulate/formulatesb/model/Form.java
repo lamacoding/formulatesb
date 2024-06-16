@@ -28,6 +28,9 @@ public class Form {
         formDto.setId(this.id.toHexString());
         formDto.setFormName(this.formName);
         formDto.setOwnerId(this.ownerId);
+        if (this.fields == null) {
+            this.fields = new ArrayList<>();
+        }
         List<Field> fields = new ArrayList<>(this.fields);
         formDto.setFields(fields);
         return formDto;

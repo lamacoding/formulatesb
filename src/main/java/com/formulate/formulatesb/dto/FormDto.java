@@ -11,6 +11,13 @@ import org.springframework.data.annotation.Id;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    DTO used to send the id as String to the frontend and not as ObjectID (which would be an object).
+    Form model contains the mapping to the DTO which just converts the ObjectID to a 24 character hex string.
+
+    Reason it to keep the frontend independent of the used database because the conversion is done in the backend.
+ */
+
 @Data
 public class FormDto {
     @Id
@@ -21,14 +28,4 @@ public class FormDto {
     @Pattern(regexp = "\\b[A-Fa-f0-9]{24}\\b") // ObjectId is a 24 character long hex string
     private String ownerId;
     private List<Field> fields;
-
-//    public Form mapToForm() {
-//        Form form = new Form();
-//        form.setId(new ObjectId(this.id);
-//        form.setFormName(this.formName);
-//        form.setOwnerId(this.ownerId);
-//        List<Field> fieldList = new ArrayList<>(this.fields);
-//
-//        return form;
-//    }
 }

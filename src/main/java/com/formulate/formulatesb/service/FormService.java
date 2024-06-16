@@ -1,5 +1,6 @@
 package com.formulate.formulatesb.service;
 
+import com.formulate.formulatesb.dto.FormCreateDto;
 import com.formulate.formulatesb.model.Form;
 import com.formulate.formulatesb.model.Session;
 import com.formulate.formulatesb.model.User;
@@ -10,6 +11,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,16 +34,27 @@ public class FormService {
         return formRepository.findById(id).orElse(null); // Handle potential 'not found' case
     }
 
-    public Form createForm(String formName) {
-//        User user = userRepository.findById(form.getOwnerId())
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        Form savedForm = formRepository.save(form);
-//        user.getOwnedForms().add(savedForm.getId().toString());
-//        userRepository.save(user);
-//
-//        return savedForm;
-        return null;
+    public Form createForm(FormCreateDto formCreateDto) {
+        // The explicit creation of an ObjectID is necessary as it is needed in the User ownedForms as well.
+        ObjectId id = new ObjectId();
+        Form form = new Form();
+        form.setId(id);
+        form.setFormName(formCreateDto.getFormName());
+        User owner = sessionService.getUserBySessionId(formCreateDto.getSessionId());
+
+        if (owner == null) {
+            return null;
+        }
+        List<String> ownedForms = owner.getOwnedForms();
+        if (ownedForms == null) {
+            ownedForms = new ArrayList<>();
+            owner.setOwnedForms(ownedForms);
+        }
+        ownedForms.add(id.toHexString());
+        owner.setOwnedForms(ownedForms);
+        userRepository.save(owner);
+        form.setOwnerId(owner.getId().toHexString());
+        return formRepository.save(form);
     }
 
     public Form updateForm(String id, Form updatedForm) {
@@ -85,15 +98,15 @@ public class FormService {
             return null;
         }
 
-        User user = session.getUser();
+        User user = sessionService.getUserBySessionId(sessionId);
         List<String> ownedForms = user.getOwnedForms();
-        if (ownedForms == null)
-        {
+        if (ownedForms == null) {
             return null;
         }
         if (ownedForms.isEmpty()) {
             return null;
         }
+        System.out.println(user);
         return formRepository.findAllById(ownedForms);
     }
 }
