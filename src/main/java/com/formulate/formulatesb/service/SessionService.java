@@ -33,7 +33,7 @@ public class SessionService {
         }
         Session requestedSession = new Session();
         requestedSession.setSessionId(RandomHashGenerator.generateRandomHash());
-        requestedSession.setUser(userService.getUserByEmail(loginRequest.getUsername()));
+        requestedSession.setUserId(userService.getUserByEmail(loginRequest.getUsername()).getId().toHexString());
         requestedSession.setStartTime(LocalDateTime.now());
         requestedSession.setEndTime(LocalDateTime.now().plusMinutes(10));
         return sessionRepository.save(requestedSession);
@@ -61,14 +61,16 @@ public class SessionService {
     }
 
     public User getUserBySessionId(String sessionId) {
-        return sessionRepository.findById(sessionId).map(Session::getUser).orElse(null);
+        Optional<Session> sessionOptional = sessionRepository.findById(sessionId);
+        if (sessionOptional.isPresent()) {
+            return userService.getUserById(sessionOptional.get().getUserId());
+        } else {
+            return null;
+        }
     }
 
     private Boolean verifyCredentials(LoginRequest loginRequest) {
         User user = userService.getUserByEmail(loginRequest.getUsername());
-        if (user != null && user.getPassword().equals(PasswordService.hashPassword(loginRequest.getPassword()))) {
-            return true;
-        }
-        return false;
+        return user != null && user.getPassword().equals(PasswordService.hashPassword(loginRequest.getPassword()));
     }
 }

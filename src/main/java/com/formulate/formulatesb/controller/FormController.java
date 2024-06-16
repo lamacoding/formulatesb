@@ -5,6 +5,8 @@ import com.formulate.formulatesb.dto.FormDto;
 import com.formulate.formulatesb.model.Form;
 import com.formulate.formulatesb.service.FormService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -17,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/form")
 public class FormController {
+    private static final Logger logger = LoggerFactory.getLogger(FormController.class);
     @Autowired
     private FormService formService;
 

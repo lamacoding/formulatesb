@@ -5,6 +5,8 @@ import com.formulate.formulatesb.LogoutRequest;
 import com.formulate.formulatesb.model.Session;
 import com.formulate.formulatesb.model.User;
 import com.formulate.formulatesb.service.SessionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,20 +15,20 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 public class SessionController {
+    private static final Logger logger = LoggerFactory.getLogger(SessionController.class);
     @Autowired
     private SessionService sessionService;
 
     @PostMapping("/login")
     public ResponseEntity<Session> login(@RequestBody LoginRequest loginRequest) {
         Session createdSession = sessionService.createSession(loginRequest);
-        System.out.println("Login request: " + loginRequest);
-        System.out.println(createdSession == null ? "failed" : createdSession.getSessionId());
+        logger.info("Login request: " + loginRequest.getUsername());
         return new ResponseEntity<>(createdSession, createdSession == null ? HttpStatus.UNAUTHORIZED : HttpStatus.OK);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@RequestBody LogoutRequest logoutRequest) {
-        System.out.println("LogoutRequest: " + logoutRequest);
+        logger.info("LogoutRequest: sessionId " + logoutRequest.getSessionId());
         try {
             sessionService.destroySession(logoutRequest);
         } catch (Exception e) {
@@ -37,7 +39,9 @@ public class SessionController {
 
     @GetMapping("/session/{sessionId}")
     public ResponseEntity<Boolean> getSessionValidity(@PathVariable String sessionId) {
+        logger.info("getSessionValidity: " + sessionId);
         if(sessionId == null || sessionId.isEmpty()) {
+            logger.error("sessionId is null or empty");
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(sessionService.getSessionValidity(sessionId), HttpStatus.OK);

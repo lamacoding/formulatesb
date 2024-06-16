@@ -15,5 +15,5 @@ public class Session {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     @NotNull
-    private User user;
+    private String userId;
 }
