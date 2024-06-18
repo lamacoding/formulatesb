@@ -35,7 +35,7 @@ public class SessionService {
         requestedSession.setSessionId(RandomHashGenerator.generateRandomHash());
         requestedSession.setUserId(userService.getUserByEmail(loginRequest.getUsername()).getId().toHexString());
         requestedSession.setStartTime(LocalDateTime.now());
-        requestedSession.setEndTime(LocalDateTime.now().plusMinutes(10));
+        requestedSession.setEndTime(LocalDateTime.now().plusHours(24));
         return sessionRepository.save(requestedSession);
     }
 
@@ -44,7 +44,7 @@ public class SessionService {
 
         if (currentSession.isPresent()) {
             if(!currentSession.get().getEndTime().isBefore(LocalDateTime.now())) {
-                currentSession.get().setEndTime(LocalDateTime.now().plusMinutes(10));
+                currentSession.get().setEndTime(LocalDateTime.now().plusHours(24));
                 sessionRepository.save(currentSession.get());
                 return true;
             }
