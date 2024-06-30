@@ -13,6 +13,6 @@ public class Field {
     private String name;
     @NotBlank
     private String type;
-    private List<String> options; //for dropdown, multi-select-dropdown, checkbox and radio
+    private List<Option> options; //for dropdown, multi-select-dropdown, checkbox and radio
     private Validation validation;
 }
