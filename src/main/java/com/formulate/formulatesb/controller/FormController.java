@@ -30,7 +30,7 @@ public class FormController {
 
     @GetMapping("/all/bySessionId/{sessionId}")
     public ResponseEntity<List<FormDto>> getAllBySessionId(@PathVariable String sessionId) {
-        logger.info("Form getAllBySessionId " + sessionId);
+        logger.info("Form getAllBySessionId {}", sessionId);
         List<Form> forms = formService.getAllFormsBySessionId(sessionId);
         List<FormDto> formDtos = new ArrayList<>();
 
@@ -45,26 +45,26 @@ public class FormController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<Form> getById(@PathVariable String id) {
-        logger.info("Form getById " + id);
+        logger.info("Form getById {}", id);
         return new ResponseEntity<>(formService.getFormById(id), HttpStatus.OK);
     }
 
     @PutMapping("/create")
     public ResponseEntity<Form> create(@Valid @RequestBody FormCreateDto formCreateDto) {
-        logger.info("Create form: " + formCreateDto);
+        logger.info("Create form: {}", formCreateDto);
         Form form = formService.createForm(formCreateDto);
         return new ResponseEntity<>(form, form == null ? HttpStatus.FORBIDDEN : HttpStatus.CREATED);
     }
 
     @PatchMapping("/update/{id}")
     public ResponseEntity<Form> update(@PathVariable String id, @Valid @RequestBody Form form) {
-        logger.info("Update form: " + form);
+        logger.info("Update form: {}", form);
         return new ResponseEntity<>(formService.updateForm(id, form), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable String id) {
-        logger.info("Delete form with id: " + id);
+        logger.info("Delete form with id: {}", id);
         boolean deleted = formService.deleteForm(id);
         return new ResponseEntity<>(deleted, deleted ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }

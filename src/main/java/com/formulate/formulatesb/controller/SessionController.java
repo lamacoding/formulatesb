@@ -21,14 +21,14 @@ public class SessionController {
 
     @PostMapping("/login")
     public ResponseEntity<Session> login(@RequestBody LoginRequest loginRequest) {
-        logger.info("Login request: " + loginRequest.getUsername());
+        logger.info("Login request: {}", loginRequest.getUsername());
         Session createdSession = sessionService.createSession(loginRequest);
         return new ResponseEntity<>(createdSession, createdSession == null ? HttpStatus.UNAUTHORIZED : HttpStatus.OK);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@RequestBody LogoutRequest logoutRequest) {
-        logger.info("LogoutRequest: sessionId " + logoutRequest.getSessionId());
+        logger.info("LogoutRequest: sessionId {}", logoutRequest.getSessionId());
         try {
             sessionService.destroySession(logoutRequest);
         } catch (Exception e) {
@@ -39,7 +39,7 @@ public class SessionController {
 
     @GetMapping("/session/{sessionId}")
     public ResponseEntity<Boolean> getSessionValidity(@PathVariable String sessionId) {
-        logger.info("getSessionValidity: " + sessionId);
+        logger.info("getSessionValidity: {}", sessionId);
         if(sessionId == null || sessionId.isEmpty()) {
             logger.error("sessionId is null or empty");
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);

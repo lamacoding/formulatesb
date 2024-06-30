@@ -37,7 +37,7 @@ public class UserController {
 
     @PutMapping("/register")
     public ResponseEntity<User> create(@Valid @RequestBody UserCreateDto userCreateDto) {
-        logger.info("User registration: " + userCreateDto.toString());
+        logger.info("User registration: {}", userCreateDto.toString());
         User newUser = userService.createUser(userCreateDto);
         return new ResponseEntity<>(newUser, newUser == null ? HttpStatus.CONFLICT : HttpStatus.OK);
     }
