@@ -9,13 +9,4 @@ public class Option {
     @Id
     private String id;
     private String value;
-//
-//    public Option() {
-//        this.id = new ObjectId();
-//    }
-//
-//    public Option(String value) {
-//        this.id = new ObjectId();
-//        this.value = value;
-//    }
 }
